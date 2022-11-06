@@ -31,17 +31,18 @@ pipeline {
               -Dsonar.login=c0280cbb5b01d38ab7c54356da951f9efd900486"
       }
     }
-    stage('Build Docker'){
-            steps{
-                sh 'docker build -t benzarty/devops .'
-            }
-        }
     stage('Docker Login'){
             steps{
 
                 sh 'docker login -u benzarty -p mohamedbenzarti'
             }
         }
+    stage('Build Docker'){
+            steps{
+                sh 'docker build -t benzarty/devops .'
+            }
+        }
+   
        }
       }
         
