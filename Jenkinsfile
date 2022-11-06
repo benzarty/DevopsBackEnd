@@ -42,6 +42,11 @@ pipeline {
                 sh 'docker build -t benzarty/devops .'
             }
         }
+    stage('Nexus') {
+      steps {
+        sh 'mvn clean deploy -Dmaven.test.skip=true'
+      }
+    }
    
        }
       }
