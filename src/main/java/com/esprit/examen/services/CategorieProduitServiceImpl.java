@@ -7,15 +7,18 @@ import org.springframework.stereotype.Service;
 import com.esprit.examen.entities.CategorieProduit;
 import com.esprit.examen.repositories.CategorieProduitRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CategorieProduitServiceImpl implements ICategorieProduitService {
 
-	
 	@Autowired
 	CategorieProduitRepository categorieProduitRepository;
+
 	@Override
 	public List<CategorieProduit> retrieveAllCategorieProduits() {
-		
+
 		return categorieProduitRepository.findAll();
 	}
 
@@ -28,7 +31,7 @@ public class CategorieProduitServiceImpl implements ICategorieProduitService {
 	@Override
 	public void deleteCategorieProduit(Long id) {
 		categorieProduitRepository.deleteById(id);
-		
+
 	}
 
 	@Override
