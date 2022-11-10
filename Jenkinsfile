@@ -1,4 +1,9 @@
 pipeline {
+environment {
+        registry = "benzarty/devops"
+        registryCredential = 'dockerHub'
+        dockerImage = ''
+    }
    agent any
    stages {
     stage('Git Checkout') {
@@ -37,17 +42,28 @@ pipeline {
               -Dsonar.login=c0280cbb5b01d38ab7c54356da951f9efd900486"
       }
     }
-    stage('Docker Login'){
-            steps{
-
-                sh 'docker login -u benzarty -p mohamedbenzarti'
+    stage('Building our image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry +":$BUILD_NUMBER"
+                }
             }
         }
-    stage('Build Docker'){
-            steps{
-                sh 'docker build -t benzarty/devops .'
+        stage('Deploy our image') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
+        stage('Cleaning up') {
+            steps {
+                echo "docker rmi $registry:$BUILD_NUMBER "
+                sh "docker rmi $registry:$BUILD_NUMBER "
+        }
+    }
     stage('Nexus') {
       steps {
         sh 'mvn clean deploy -Dmaven.test.skip=true'
