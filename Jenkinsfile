@@ -53,6 +53,12 @@ pipeline {
         sh 'mvn clean deploy -Dmaven.test.skip=true'
       }
     }
+
+    stage('Start container') {
+             steps {
+                sh 'docker-compose up -d '
+      }
+        }
    
        }
       }
